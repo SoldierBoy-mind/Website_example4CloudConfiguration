@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="prova2.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1061"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="sqlite_sequence" custom_title="0" dock_id="1" table="4,15:mainsqlite_sequence"/><dock_state state="000000ff00000000fd0000000100000002000005bd00000386fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000005bd0000012000ffffff000002600000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE IF NOT EXISTS &quot;users&quot; (
+	&quot;id&quot;	INTEGER NOT NULL,
+	&quot;email&quot;	TEXT NOT NULL,
+	&quot;name&quot;	TEXT,
+	&quot;hash&quot;	TEXT NOT NULL,
+	&quot;salt&quot;	TEXT NOT NULL,
+	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS user_sessions (
+    id              INTEGER NOT NULL,
+    user_id         INTEGER NOT NULL REFERENCES users(id),
+    two_fa_used     BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS config_parameters (
+    key             VARCHAR(100) PRIMARY KEY,
+    value_numeric   DECIMAL(10,2),
+    value_integer   INTEGER,
+    value_text      VARCHAR(255),
+    updated_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS orders (
+    id                      SERIAL PRIMARY KEY,
+    user_id                 INTEGER NOT NULL REFERENCES users(id),
+
+    instance_ram_gb         INTEGER NOT NULL,   -- 16 / 32 / 128
+    instance_price          DECIMAL(10,2) NOT NULL,
+
+    storage_tb              INTEGER NOT NULL,
+    storage_price           DECIMAL(10,2) NOT NULL,
+
+    data_transfer_gb        INTEGER NOT NULL,
+    data_transfer_price     DECIMAL(10,2) NOT NULL,
+
+    total_price             DECIMAL(10,2) NOT NULL,
+
+    status                  VARCHAR(20) NOT NULL CHECK (status IN ('CONFIRMED', 'CANCELLED')),
+
+    created_at              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    cancelled_at            TIMESTAMP
+);
+
+
+
+</sql><sql name="SQL 1* (1)* (1)">INSERT INTO &quot;users&quot; VALUES (1,'u1@p.it','John','15d3c4fca80fa608dcedeb65ac10eff78d20c88800d016369a3d2963742ea288','72e4eeb14def3b21');
+INSERT INTO &quot;users&quot; VALUES (2,'u2@p.it','Alice','1d22239e62539d26ccdb1d114c0f27d8870f70d622f35de0ae2ad651840ee58a','a8b618c717683608');
+INSERT INTO &quot;users&quot; VALUES (3,'u3@p.it','George','61ed132df8733b14ae5210457df8f95b987a7d4b8cdf3daf2b5541679e7a0622','e818f0647b4e1fe0');</sql><sql name="SQL 4">INSERT INTO &quot;users&quot; VALUES (1,'u1@p.it','John','15d3c4fca80fa608dcedeb65ac10eff78d20c88800d016369a3d2963742ea288','72e4eeb14def3b21');
+INSERT INTO &quot;users&quot; VALUES (2,'u2@p.it','Alice','1d22239e62539d26ccdb1d114c0f27d8870f70d622f35de0ae2ad651840ee58a','a8b618c717683608');
+INSERT INTO &quot;users&quot; VALUES (3,'u3@p.it','George','61ed132df8733b14ae5210457df8f95b987a7d4b8cdf3daf2b5541679e7a0622','e818f0647b4e1fe0');</sql><current_tab id="2"/></tab_sql></sqlb_project>
